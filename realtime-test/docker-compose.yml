@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  realtime-test:
+    build: .
+    container_name: realtime-monitor
+    cap_add:
+      - SYS_NICE
+    privileged: true  
+    cpuset: "0"  
+    cpu_shares: 512 
+    ulimits:
+      rtprio: 99 
+    restart: unless-stopped
+    volumes:
+      - ./app:/app 
+    environment:
+      - TARGET_INTERVAL=0.01 
+      - REPORT_INTERVAL=5  
+      - SCHED_POLICY=SCHED_FIFO 
+      - PRIORITY=80  
